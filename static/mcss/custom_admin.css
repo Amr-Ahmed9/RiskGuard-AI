@@ -1,0 +1,63 @@
+/* Custom Admin CSS */
+:root {
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+}
+
+/* Admin header styling */
+#header {
+    background: var(--primary);
+    color: white;
+}
+
+/* Sidebar styling */
+#nav-sidebar {
+    background: var(--dark);
+}
+
+/* Content area styling */
+#content {
+    background: var(--light);
+}
+
+/* Form styling */
+.form-row {
+    padding: 10px;
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+/* Button styling */
+.button, input[type=submit] {
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+}
+
+.button:hover, input[type=submit]:hover {
+    background: var(--dark);
+} 
+#header .brand-link img {
+    width: 150px !important;  /* Adjust width */
+    height: auto !important;  /* Maintain aspect ratio */
+}
+
+.login-logo img {
+    
+    background-color: aliceblue;
+    width: 200px !important;
+    height: auto !important;
+    border-radius: 50%;
+    
+}
+
+

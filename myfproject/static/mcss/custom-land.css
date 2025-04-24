@@ -1,0 +1,97 @@
+
+.bg-primary
+{
+     background-color: #00050a !important;  
+     color: white !important;
+} 
+
+.divider,.text-center
+{
+    color:white !important;
+}
+.page-section:hover,
+.text-primary,
+.bg-m,
+.mnk,
+.mm-me{
+   color: #000 !important;
+    transition: 0 !important;
+}
+/* Transparent state */.bg-mm,
+#mainNav.navbar-light .navbar-brand, 
+#mainNav.navbar-light .nav-link {
+    color: #ccc2c2 !important;
+}
+#mainNav.navbar-light .navbar-brand:hover,
+#mainNav.navbar-light .nav-link:hover {
+    color: #ffffff !important;
+}
+
+/* #004d99 */
+ /* After scroll */
+#mainNav.navbar-light.navbar-shrink .navbar-brand, 
+#mainNav.navbar-light.navbar-shrink .nav-link {
+    color: #ccc2c2 !important;
+} 
+ 
+#mainNav.navbar-light.navbar-shrink .navbar-brand:hover, 
+#mainNav.navbar-light.navbar-shrink .nav-link:hover {
+    color: #ffffff !important;
+} 
+ 
+#mainNav:not(.navbar-shrink) {
+backdrop-filter: blur(10px);
+box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+
+
+#mainNav.navbar-shrink {
+    background-color: rgba(0,6,11, 0.486);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+.navbar-nav .nav-link {
+    transition: color 0.3s ease;
+}
+
+
+
+
+
+
+#mainNav.navbar-shrink .nav-item .nav-link.active {
+    color: #ffffff !important;
+}
+
+
+
+
+/* Optional: style links inside the expanded collapsed menu */
+/* #mainNav:not(.navbar-shrink) .navbar-collapse.show .nav-link {
+  
+} */
+
+@media (max-width: 991.98px) {
+    #mainNav:not(.navbar-shrink) {
+        background-color: rgba(0, 6, 11, 0); /* Dark blue glassy */
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+   /* Toggle button style */
+   
+}  
+#mainNav .navbar-toggler {
+        border: 3px solid rgba(1,47,163,255); /* Optional border */
+        background-color: rgba(255,255,255,255);
+      /* Same dark blue background */
+    }    
+   
+     #mainNav .navbar-toggler .navbar-toggler-icon {
+        
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgb(5,39,153)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }      
+           /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+     */
+    
