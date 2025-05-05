@@ -16,7 +16,8 @@ urlpatterns = [
     path('alert_table/', views.alerttable, name='alerttable'),
     path('overalltable/', views.overalltable, name='overalltable'),
     path('forecast/', views.forecast, name='forecast'),
- 
+    path('csv_download/', views.csv_download, name='csv_download'),
+    path('pdf_download/', views.pdf_download, name='pdf_download'),
 
 
 ]

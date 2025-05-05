@@ -6,6 +6,10 @@ from userpreferences.models import UserPreference
 from .forms import TargetForm, AlertSettingForm
 from .models import Target, AlertSetting
 from .forecasting import get_forecast_data
+from django.http import HttpResponse
+import csv
+from datetime import datetime
+
 
 @login_required(login_url='login')
 def mainDash(request):
@@ -147,4 +151,43 @@ def forecast(request):
     return render(request, 'MainDash/forecast.html', context)
 
 
+import csv
+from datetime import datetime
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
+def csv_download(request):
+    # Assuming 'dashboard_data' returns a dictionary with all the necessary data
+    data = dashboard_data(request)
+    
+    # Set up the CSV response
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Income_' + datetime.now().strftime("%Y-%m-%d") + '.csv'
+    
+    # Create a CSV writer object
+    writer = csv.writer(response)
+    
+    # Write the headers in the first row (optional)
+    writer.writerow(['Field', 'Value'])
+    
+    # Write the data fields and their corresponding values
+    writer.writerow(['Saving Goal', f"{data['goals']} {data['user_preferences'].currency}"])
+    writer.writerow(['Total Income', f"{data['total_income']} {data['user_preferences'].currency}"])
+    writer.writerow(['Total Expenses', f"{data['total_expenses']} {data['user_preferences'].currency}"])
+    writer.writerow(['Net Profit', f"{data['net_profit']} {data['user_preferences'].currency}"])
+    writer.writerow(['Average Income', f"{data['average_income']} {data['user_preferences'].currency}"])
+    writer.writerow(['Average Expenses', f"{data['average_expense']} {data['user_preferences'].currency}"])
+    writer.writerow(['Income Ratio', f"{data['income_ratio']}%"])
+    writer.writerow(['Expenses Ratio', f"{data['expense_ratio']}%"])
+    
+    return response
+
+      
+
+@login_required(login_url='login')
+def pdf_download(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Income' +\
+        datetime.now().strftime("%Y-%m-%d")+'.pdf'
+    return response

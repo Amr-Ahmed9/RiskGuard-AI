@@ -2,10 +2,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
-
 from income.models import Income
 from expenses.models import Expense
-
 def get_forecast_data(user, months_ahead=3):
     # Step 1: Load data
     income_qs = Income.objects.filter(owner=user)

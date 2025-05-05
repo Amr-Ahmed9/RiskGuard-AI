@@ -15,6 +15,15 @@
             <i class="fas fa-plus"></i> Add New Income
         </a>
     </div>
+    <div class="btn-group" role="group" aria-label="Download options" style="z-index: 9999 !important;">
+        <a href="{% url 'csv_downloa' %}" class="btn btn-sm btn-primary m-3">
+          Download CSV
+        </a>
+       <hr>
+        <a href="{% url 'pdf_downloa' %}" class="btn btn-sm btn-primary m-3">
+          Download PDF
+        </a>
+      </div>
 
     <div class="card shadow mb-2">
         <div class="card-header py-3 p-2">

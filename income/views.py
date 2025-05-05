@@ -6,6 +6,9 @@ from .models import Income
 from django.contrib.auth.decorators import login_required
 from .utils import income_data_processed
 from userpreferences.models import UserPreference
+from django.http import HttpResponse
+import csv
+from datetime import datetime
 
 
 
@@ -77,3 +80,24 @@ def income_tables(request):
         'user_preferences': user_preferences,
     }
     return render(request, 'income/tables.html', context)
+
+
+@login_required(login_url='login')
+def csv_downloa(request):
+  response = HttpResponse(content_type='text/csv')
+  response['Content-Disposition'] = 'attachment; filename=Income' +\
+      datetime.now().strftime("%Y-%m-%d")+'.csv'
+  writer = csv.writer(response)
+  writer.writerow(['Amount','Date','Description', 'Source'])
+  for income in Income.objects.filter(owner=request.user):
+    writer.writerow([income.amount, income.date, income.description, income.source])
+  return response
+        
+      
+
+@login_required(login_url='login')
+def pdf_downloa(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Income' +\
+        datetime.now().strftime("%Y-%m-%d")+'.pdf'
+    return response

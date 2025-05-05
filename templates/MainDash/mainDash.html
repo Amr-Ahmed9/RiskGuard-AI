@@ -11,7 +11,7 @@
 
     <div class="d-flex justify-content-end mb-3">
         <form method="get" id="filterForm">
-            <select name="time_filter" class="form-select btn btn-sm btn-primary" onchange="document.getElementById('filterForm').submit()" style="background-color: #000b16 ; color:rgb(255, 255, 255); border-color: #000b16;">
+            <select name="time_filter" class="form-select btn btn-sm btn-primary" onchange="document.getElementById('filterForm').submit()" >
                 <option value="day" {% if time_filter == 'day' %}selected{% endif %}>Today</option>
                 <option value="week" {% if time_filter == 'week' %}selected{% endif %}>This Week</option>
                 <option value="month" {% if time_filter == 'month' %}selected{% endif %}>This Month</option>
@@ -322,7 +322,7 @@ var savingsGoalChart = new Chart(ctx3, {
 
 
 
-// Trend Line Chart
+// growth rate Line Chart
 var ctx = document.getElementById("myAreaChart");
  var myLineChart = new Chart(ctx, {
      type: 'line',
@@ -420,7 +420,7 @@ var avgChart = new Chart(ctxAvg, {
     data: {
         labels: ['Income', 'Expense'],
         datasets: [{
-            label: 'Average Amount',
+            label: 'Average Amount', 
             data: [{{ average_income|floatformat:"2" }}, {{ average_expense|floatformat:"2" }}],
             backgroundColor: ['#1cc88a', '#e74a3b'],
             borderColor: ['#17a673', '#c0392b'],

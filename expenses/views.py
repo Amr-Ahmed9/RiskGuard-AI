@@ -5,7 +5,9 @@ from .forms import ExpenseForm
 from userpreferences.models import UserPreference
 from django.contrib import messages
 from .utils import expense_data_processed
-
+from django.http import HttpResponse
+from datetime import datetime
+import csv
 
 @login_required(login_url='login')
 
@@ -75,4 +77,24 @@ def delete_expense(request, expense_id):
     expense.delete()
     messages.success(request, 'Expense deleted successfully')
     return redirect('expenses-tables')   
+
+@login_required(login_url='login')
+def csv_download(request):
+  response = HttpResponse(content_type='text/csv')
+  response['Content-Disposition'] = 'attachment; filename=Expenses' +\
+      datetime.now().strftime("%Y-%m-%d")+'.csv'
+  writer = csv.writer(response)
+  writer.writerow(['Amount','Date','Description', 'Category'])
+  for expense in Expense.objects.filter(owner=request.user):
+    writer.writerow([expense.amount, expense.date, expense.description, expense.category])
+  return response
+        
+      
+
+@login_required(login_url='login')
+def pdf_download(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Expenses' +\
+        datetime.now().strftime("%Y-%m-%d")+'.pdf'
+    return response
 

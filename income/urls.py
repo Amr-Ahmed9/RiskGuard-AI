@@ -7,4 +7,6 @@ urlpatterns = [
     path('add/', views.add_income, name='add_income'),
     path('edit/<int:income_id>/', views.edit_income, name='edit_income'),
     path('delete/<int:income_id>/', views.delete_income, name='delete_income'),
+    path('csv-download/', views.csv_downloa, name='csv_downloa'),
+    path('pdf-download/', views.pdf_downloa, name='pdf_downloa'),
 ]
