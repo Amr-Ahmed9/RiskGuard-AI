@@ -25,6 +25,10 @@ urlpatterns = [
     path('', include('landingpage.urls')),
     path('authentication/', include('authentication.urls')),
     path('expenses/', include('expenses.urls')),
+    path('userpreferences/', include('userpreferences.urls')),
+    path('income/', include('income.urls')),
+    path('userprofile/', include('userprofile.urls')),
+    path('main/', include('MainDash.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -10,7 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Register</title>
+   {% block title %}
+   {% endblock %}
     <link rel="icon" type="image/x-icon" href="{% static 'assets/img/2.png' %}" />
      
     <!-- Custom fonts for this template-->
@@ -24,6 +25,8 @@
     <link href="{% static 'mcss/sb-admin-2.css' %}" rel="stylesheet">
     <link href="{% static 'mcss/ovrdesb.css' %}" rel="stylesheet">
     <link href="{% static 'mcss/custom-land.css' %}" rel="stylesheet">
+    {% block css %}
+    {% endblock %}
 </head>
 
 
@@ -73,14 +76,14 @@
 
     <!-- Core plugin JavaScript-->
     <script src="{% static 'mvendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-    {% comment %} <!-- Custom scripts for all pages-->
+    
+    <!-- Custom scripts for all pages-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- SimpleLightbox plugin JS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
         <!-- Core theme JS-->
         
-    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> {% endcomment %}
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
     <script src="{% static 'mjs/sb-admin-2.min.js' %}"></script>
     <script src="{% static 'mjs/scripts.js' %}"></script>

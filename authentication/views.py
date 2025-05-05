@@ -1,40 +1,37 @@
 from django.shortcuts import render , redirect
-from django.contrib.auth.forms import UserCreationForm,User
-from django.core.mail import send_mail
-from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate , login, logout
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-from .forms import CreatUserForm , LoginForm , ForgotPasswordForm
-from .decorators import unauthenticated_user ,allowed_users
-from .models import UserProfile
+from .forms import CreatUserForm , LoginForm 
+from .decorators import unauthenticated_user 
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 
-
+#register view
 @unauthenticated_user
 def registerPage(request):
     form = CreatUserForm()
+
     if request.method =='POST':
         form = CreatUserForm(request.POST)
         if form.is_valid():
-            #  form.save()
-            # user = form.cleaned_data.get('username')
-            # messages.success(request , 'Account was created for ' + user)
-            user = form.save()
-            user_type = form.cleaned_data.get('user_type')
-            UserProfile.objects.create(user=user, user_type=user_type)
+            user = form.save() 
+
             messages.success(request , 'Account was created for ' + user.username)
             return redirect('login')
     context = {'Rform':form}
     return render(request,'authentication/register.html',context)
 
 
+#login view 
 @unauthenticated_user
 def loginPage(request):
 
     form = LoginForm()
-
     if request.method == 'POST':
         form =LoginForm(request.POST)
         if form.is_valid():
@@ -44,89 +41,38 @@ def loginPage(request):
             user = authenticate(request , username=username ,password=password)
             if user is not None :
                 login(request ,user)
-                return redirect( 'expenses_index' )
+                messages.success(request, "Welcome to the main dashboard!")
+                return redirect( 'mainDash' )
             else:
-                form.add_error(None, 'Invalid username or password')
                 messages.info(request,'Invalid username or password')
+                return redirect('login')
     context ={'Lform':form}
     return render(request , 'authentication/login.html',context)
 
 
 
-def forgotPassPage(request):
-    if request.method == 'POST':
-        form = ForgotPasswordForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            user = User.objects.filter(email=email).first()
-            if user:
-                # Ideally you use Django's password reset system, but here's a placeholder email logic
-                send_mail(
-                    subject='Reset Your Password',
-                    message='Click the link below to reset your password:\nhttp://yourdomain.com/reset-link/',
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[email],
-                )
-                messages.success(request, 'Password reset email sent!')
-            else:
-                messages.error(request, 'No user with this email was found.')
-    else:
-        form = ForgotPasswordForm()
-    return render(request, 'forms/forgot-password.html', {'Fform': form})
+
+
+
+def CustomPasswordResetForm(request):
+        def save(self, request, **kwargs):
+            email = self.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+
+                reset_url = f"http://127.0.0.1:8000/authentication/reset/{uid}/{token}/"
+                return render(request, 'authentication/password_reset_display.html', {'reset_url': reset_url})
+
+            except User.DoesNotExist:
+                return render(request, 'authentication/password_reset_display.html', {'error': "User not found."})
 
 
 # Logout View
 
-
+@login_required(login_url='login')
 def logoutUser(request):
     logout(request)
     return redirect('login')
 
-
-
-
-# from django.shortcuts import render, redirect
-# from django.contrib.auth import authenticate, login, logout
-# from django.contrib import messages
-# from .form import CreatUserForm, LoginForm
-
-# # Registration View
-# def registerPage(request):
-#     form = CreatUserForm()
-
-#     if request.method == 'POST':
-#         form = CreatUserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             email = form.cleaned_data.get('email')
-#             messages.success(request, f'Account created for {email}')
-#             return redirect('login')  # Change 'login' to your actual login route name if needed
-
-#     context = {'Rform': form}
-#     return render(request, 'forms/register.html', context)
-
-# # Login View
-# def loginPage(request):
-#     form = LoginForm()
-
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-
-#             user = authenticate(request, email=email, password=password)
-
-#             if user is not None:
-#                 login(request, user)
-#                 return redirect('homeforU')  # Change to your actual homepage name
-#             else:
-#                 form.add_error(None, 'Invalid email or password')
-
-#     context = {'Lform': form}
-#     return render(request, 'forms/login.html', context)
-
-# # Logout View
-# def logoutUser(request):
-#     logout(request)
-#     return redirect('login')

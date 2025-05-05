@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Delete Target</h5>
+                
+                <form method="post" action="{% url 'delete_target' target.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <a href="{% url 'mainDash' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+{% endblock %}

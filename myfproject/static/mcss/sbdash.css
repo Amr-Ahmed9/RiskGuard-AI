@@ -18,6 +18,7 @@
  
 }
 
+
 .navbar-light,
 .bg-danger1 {
   background: linear-gradient(135deg, #001b36, #001b36);
@@ -41,8 +42,4 @@
     z-index: 1030; 
   
 }
-/* #f3f3f37e, #f3f3f37e background-blend-mode: multiply;
-    color: rgb(255, 255, 255); 
-    backdrop-filter: blur(15px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.322);
-   */
+

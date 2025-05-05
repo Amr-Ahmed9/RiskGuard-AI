@@ -1,9 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate , login, logout
 from django import forms
 from django.contrib.auth.password_validation import password_validators_help_text_html
-from .models import UserProfile
+
 
 class CreatUserForm(UserCreationForm):
     first_name = forms.CharField(
@@ -47,7 +46,7 @@ class CreatUserForm(UserCreationForm):
             'class': 'form-control form-control-user',
             'placeholder': 'Password'
         }),
-          help_text=password_validators_help_text_html(),
+        help_text=password_validators_help_text_html(),
     )
 
     password2 = forms.CharField(
@@ -58,18 +57,10 @@ class CreatUserForm(UserCreationForm):
         })
     )
 
-    user_type = forms.ChoiceField(
-        choices=UserProfile.USER_TYPE_CHOICES,
-        widget=forms.RadioSelect(attrs={
-            'class': 'custom-checkbox small inline-block'
-        }),
-        label="Are you using this for personal finance or business?",
-        required=True
-    )
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2', 'user_type']
+        fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
   
 
 
@@ -93,12 +84,3 @@ class LoginForm(forms.Form):
         })
 
     )  
-class ForgotPasswordForm(forms.Form):
-    email = forms.EmailField(
-    required=True,
-    widget=forms.EmailInput(attrs={
-            'class': 'form-control form-control-user',
-            'placeholder': 'Enter Email Address...'
-        })
-    )
-    

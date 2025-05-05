@@ -14,33 +14,19 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-import django_heroku
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
-
-
-# Load environment variables from the specific file
+# Load environment variables from the .env file
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 #SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') or 'django-insecure-development-key-only-8^#v%6j$+f@k&m!p3n2q1r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0'
+
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+#DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 DEBUG = True
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
 # Security Settings
@@ -54,6 +40,8 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+SESSION_COOKIE_HTTPONLY = True
+
 
 
 
@@ -62,6 +50,8 @@ SECURE_HSTS_PRELOAD = True
 # Application definition
 
 INSTALLED_APPS = [
+
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +61,13 @@ INSTALLED_APPS = [
     'landingpage.apps.LandingpageConfig',
     'authentication.apps.AuthenticationConfig',
     'expenses.apps.ExpensesConfig',
+    'userpreferences.apps.UserpreferencesConfig',
+    'income.apps.IncomeConfig',
+    'userprofile.apps.UserprofileConfig',
+    'MainDash.apps.MaindashConfig',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'myfproject.urls'
@@ -96,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'MainDash.context_processors.global_alerts',
             ],
         },
     },
@@ -153,16 +151,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'myfproject/static'),
 ]
-
-
-
-
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 MEDIA_URL = '/media/'
@@ -176,4 +170,62 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-django_heroku.settings(locals())
+
+#SMTP Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+
+#Jazzmin Settings for Adminstrator Panel
+
+JAZZMIN_SETTINGS = {
+    "site_title": "RiskGuard AI Admin",
+    "site_header": "RiskGuard AI",
+     "site_logo": "assets/img/2.png",  
+    "login_logo": "assets/img/2.png", 
+    "welcome_sign": "Welcome to RiskGuard Adminstration",
+    "site_brand": "RiskGuard",
+    "custom_css": "mcss/custom_admin.css",
+}
+
+#Jazzmin UI Tweaks settings to customize the look and feel of the Adminstrator Panel
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "body":"bg-dark",
+    "body_text": "text-white",
+    "body_text_hover": "text-white",
+    "body_text_active": "text-white",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark bg-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark bg-dark",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": True,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style":False,
+    "sidebar_nav_flat_style": False,
+    "theme": "cerulean",
+    "dark_mode_theme": "darkly",
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success",
+    },
+}

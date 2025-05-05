@@ -23,7 +23,7 @@
 
 /* Content area styling */
 #content {
-    background: var(--light);
+    background: var(--dark);
 }
 
 /* Form styling */
@@ -53,11 +53,34 @@
 
 .login-logo img {
     
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
     width: 200px !important;
     height: auto !important;
-    border-radius: 50%;
+    border-radius: 50% !important;
+
+    
+}
+body.jazzmin-login-page {
+    background: url('/static/assets/img/Picture1.png') no-repeat center center fixed;
+    background-size: cover !important;
+    background-color: #00050e !important;
+}
+
+/* Optional: Make login box a bit transparent or styled */
+.login-box, .card {
+    /* background: rgba(255, 255, 255, 0.8); white with 80% opacity */
+    color: rgb(254, 254, 255) !important;
+    background-color: rgba(9, 2, 49, 0.164) !important;
+    border-radius: 10px !important;
+    /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5); */
+    backdrop-filter: blur(10px) !important  ;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
+    padding: 20px !important;
     
 }
 
+
+/* .text-white {
+    color: rgb(42, 41, 51) !important;
+} */
 

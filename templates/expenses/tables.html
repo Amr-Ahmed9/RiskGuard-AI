@@ -1,73 +1,78 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Expenses | Table{% endblock %}
+{% block extra_head %}
+<link href="{% static 'mvendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
 
 
-{% block title %}Tables | RiskGuard AI{% endblock %}    
+<div class="container-fluid">
+    
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1 class="h3 mb-2 text-gray-200">Expenses Table</h1>
+        <a href="{% url 'add-expenses' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Expenses
+        </a>
+    </div>
 
-{% block content %} 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+    <div class="card shadow mb-2">
+        <div class="card-header py-3 p-2">
+            <h6 class="m-0 font-weight-bold text-gray-200">All Expenses</h6>
+        </div>
+        
+                <div class="card-body ">
+                    <div class="table-responsive table-hover">
+                        <table class="table table-border-1" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="text-light">
+                        <tr>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="text-light">
+                        <tr>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                    <tfoot>
+                    <tbody class="text-gray-300">
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{user_preferences.currency }}{{ expense.amount|floatformat:0 }}</td>
+                            <td>{{ expense.date }}</td>
+                            <td>{{ expense.description }}</td>
+                            <td>{{ expense.category }}</td>
+                            <td>
+                                <a href="{% url 'edit-expense' expense.id %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{% url 'delete-expense' expense.id %}" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="#">official DataTables documentation</a>.</p>
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Uploaded Data Overview</h6>
-                        </div>
-                        <div class="card-body text-light">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead class="text-light">
-                                        <tr>
-                                            <th>File</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                            <th>Records</th>
-                                            <th>Errors</th>
-                                         
-                                        </tr>
-                                    </thead>
-                                    <tfoot class="text-light">
-                                        <tr>
-                                            <th>File</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                            <th>Records</th>
-                                            <th>Errors</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody class="text-gray-300">
-                                        
-                                        {% for file in uploads %}
-                                        <tr>
-                                            <td>{{ file.file.name }}</td>
-                                            <td>{{ file.file_type }}</td>
-                                            <td>{{ file.get_status_display }}</td>
-                                            <td>{{ file.uploaded_at }}</td>
-                                            <td>{{ file.records_processed }}</td>
-                                            <td>{{ file.processing_errors.error|default:"-" }}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
-                <!-- /.container-fluid -->
-                {% block extra_scripts %}
-                <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
-                <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
-            
-                <!-- Page level custom scripts -->
-                <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
-                {% endblock %}
+
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'mvendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'mvendor/datatables/dataTables.bootstrap4.min.js' %}"></script> 
+
+<!-- Page level custom scripts -->
+<script src="{% static 'mjs/demo/datatables-demo.js' %}"></script> 
 {% endblock %}

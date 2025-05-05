@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Income | Table{% endblock %}
+{% block extra_head %}
+<link href="{% static 'mvendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+<div class="container-fluid">
+    
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1 class="h3 mb-2 text-gray-800">Targets Table</h1>
+       
+        </a>
+        <a href="{% url 'create_target' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Target
+        </a>
+        
+    </div>
+
+    <div class="card shadow mb-2">
+        <div class="card-header py-3 p-2">
+            <h6 class="m-0 font-weight-bold text-gray-200">target</h6>
+        </div>
+        
+                <div class="card-body ">
+                    <div class="table-responsive table-hover">
+                        <table class="table table-border-1" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="text-light">
+                        <tr>
+                            <th>Target Amount</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Period</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="text-light">
+                        <tr>    
+                            <th>Target Amount</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Period</th>
+                            <th>Actions</th>
+                    
+                    <tbody class="text-gray-300">
+                        {% for target in target %}
+                        <tr>
+                        
+                               
+                                <td>{{ target.amount|floatformat:0 }} {{ user_preferences.currency }} </td>
+                                <td>{{ target.start_date }}</td>
+                                <td>{{ target.end_date }}</td>
+                                <td>{{ target.period }}</td>
+                                <td>
+                                <a href="{% url 'edit_target' target.id %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{% url 'delete_target' target.id %}" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                                {% endfor %}
+                                
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'mvendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'mvendor/datatables/dataTables.bootstrap4.min.js' %}"></script> 
+
+<!-- Page level custom scripts -->
+<script src="{% static 'mjs/demo/datatables-demo.js' %}"></script> 
+{% endblock %}

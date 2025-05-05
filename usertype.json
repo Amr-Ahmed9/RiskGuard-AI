@@ -1,0 +1,8 @@
+{
+    "employee": "Employee",
+    "business": "Business",
+    "freelancer": "Freelancer",
+    "student": "Student",
+    "retiree": "Retiree",
+    "other": "Other"
+}
