@@ -11,6 +11,8 @@ import csv
 from datetime import datetime
 
 
+
+
 @login_required(login_url='login')
 def mainDash(request):
     
@@ -151,10 +153,7 @@ def forecast(request):
     return render(request, 'MainDash/forecast.html', context)
 
 
-import csv
-from datetime import datetime
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+
 
 @login_required(login_url='login')
 def csv_download(request):
