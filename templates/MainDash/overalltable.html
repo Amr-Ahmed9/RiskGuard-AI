@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Income | Table{% endblock %}
+{% block extra_head %}
+<link href="{% static 'mvendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+<div class="container-fluid">
+    
+    <div class="d-flex justify-content-end mb-3">
+        <form method="get" id="filterForm">
+            <select name="time_filter" class="form-select btn btn-sm btn-primary" onchange="document.getElementById('filterForm').submit()" >
+                <option value="day" {% if time_filter == 'day' %}selected{% endif %}>Today</option>
+                <option value="week" {% if time_filter == 'week' %}selected{% endif %}>This Week</option>
+                <option value="month" {% if time_filter == 'month' %}selected{% endif %}>This Month</option>
+                <option value="year" {% if time_filter == 'year' %}selected{% endif %}>This Year</option>
+                
+            </select>
+        </form>
+    </div>
+    
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1 class="h3 mb-2 text-gray-200">summary table</h1>
+       
+        </a>
+        
+        
+    </div>
+
+    <div class="btn-group" role="group" aria-label="Download options" style="z-index: 9999 !important;">
+        <a href="{% url 'csv_download' %}" class="btn btn-sm btn-primary m-3">
+          Download CSV
+        </a>
+       <hr>
+        <a href="{% url 'pdf_download' %}" class="btn btn-sm btn-primary m-3">
+          Download PDF
+        </a>
+      </div>
+
+    
+    
+    <div class="card shadow mb-2">
+        <div class="card-header py-3 p-2">
+            <h6 class="m-0 font-weight-bold text-gray-200">insights</h6>
+        </div>
+        
+                <div class="card-body ">
+                    <div class="table-responsive table-hover">
+                        <table class="table table-border-1" id="dataTable" width="100%" cellspacing="0">
+                            <tbody class="text-light">
+                                <tr>
+                                  <th>Saving Goal</th>
+                                  <td>{{ savings_goal_amount|floatformat:0 }} {{ user_preferences.currency }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Total Income</th>
+                                  <td>{{ total_income|floatformat:0 }} {{ user_preferences.currency }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Total Expenses</th>
+                                  <td>{{ total_expenses|floatformat:0 }} {{ user_preferences.currency }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Net Profit</th>
+                                  <td>{{ net_profit|floatformat:0 }} {{ user_preferences.currency }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Average Income</th>
+                                  <td>{{ average_income|floatformat:0 }} {{ user_preferences.currency }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Average Expenses</th>
+                                  <td>{{ average_expense|floatformat:0 }} {{ user_preferences.currency }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Income Ratio</th>
+                                  <td>{{ income_ratio|floatformat:0 }}%</td>
+                                </tr>
+                                <tr>
+                                  <th>Expenses Ratio</th>
+                                  <td>{{ expense_ratio|floatformat:0 }}%</td>
+                                </tr>
+                              </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'mvendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'mvendor/datatables/dataTables.bootstrap4.min.js' %}"></script> 
+
+<!-- Page level custom scripts -->
+<script src="{% static 'mjs/demo/datatables-demo.js' %}"></script> 
+{% endblock %}

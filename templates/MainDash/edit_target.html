@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">  
+                <div class="card-body">
+                    <h5 class="card-title">Edit Target</h5>
+                    <form action="{% url 'edit_target' target.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.amount.id_for_label }}">Amount</label>
+                            {{ form.amount }}
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                            {{ form.start_date }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.end_date.id_for_label }}">End Date</label>
+                            {{ form.end_date }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.period.id_for_label }}">Period</label>
+                            {{ form.period }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Target</button>
+                        <a href="{% url 'mainDash' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+/* Navbar */
+.navbar {
+    background-color: #000b16 !important; /* Matches navbar-white navbar-light */
+    color: rgb(252, 252, 252) !important;
+}
+
+/* Sidebar */
+.sidebar-dark-primary {
+    background-color: #343a40 !important; /* Dark sidebar color */
+    color: white !important;
+}
+
+/* Sidebar Links */
+.sidebar-dark-primary .nav-link {
+    color: white !important;
+}
+
+.sidebar-dark-primary .nav-link:hover {
+    background-color: #007bff !important; /* Primary accent */
+}
+
+/* Buttons */
+.btn-outline-primary {
+    border-color: #007bff !important;
+    color: #007bff !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+/* Fix Navbar & Sidebar */
+.layout-fixed .main-sidebar {
+    position: fixed !important;
+}
+
+/* Dark Mode Theme (If Enabled) */
+body.dark-mode {
+    background-color: #1e1e1e !important;
+    color: white !important;
+}

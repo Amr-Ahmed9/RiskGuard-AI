@@ -1,0 +1,446 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">Summary | Dashboard</h1>
+
+    <div class="d-flex justify-content-end mb-3">
+        <form method="get" id="filterForm">
+            <select name="time_filter" class="form-select btn btn-sm btn-primary" onchange="document.getElementById('filterForm').submit()" >
+                <option value="day" {% if time_filter == 'day' %}selected{% endif %}>Today</option>
+                <option value="week" {% if time_filter == 'week' %}selected{% endif %}>This Week</option>
+                <option value="month" {% if time_filter == 'month' %}selected{% endif %}>This Month</option>
+                <option value="year" {% if time_filter == 'year' %}selected{% endif %}>This Year</option>
+                
+            </select>
+        </form>
+    </div>
+
+    <!-- Cards Row -->
+    <div class="row">
+
+        <!-- Total Income -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-success text-uppercase mb-1">Total Income</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_income|floatformat:0 }} {{ user_preferences.currency }}</div>
+                    
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                </div>   
+            </div>
+            
+        </div>
+
+        <!-- Total Expenses -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-danger text-uppercase mb-1">Total Expenses</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_expenses|floatformat:0 }} {{ user_preferences.currency }}</div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+
+        <!-- Net Profit -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-primary text-uppercase mb-1">Net Profit</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ net_profit|floatformat:0}} {{ user_preferences.currency }}</div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+
+        <!-- savings goal -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-warning text-uppercase mb-1">Savings Goal</div>
+                    {% if goals %}
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ goals.0 }}</div>
+                    {% else %}
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">No target set</div>
+                    {% endif %}
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class="row justify-content-center">
+
+        <!-- Total Income -->
+        {% comment %} <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-success text-uppercase mb-1">Averge Income</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ average_income|floatformat:0 }} {{ user_preferences.currency }}</div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div> {% endcomment %}
+
+        <!-- averge expenses -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-danger text-uppercase mb-1">Averge Expenses</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"> {{ average_expense|floatformat:0 }} {{ user_preferences.currency }}</div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+
+        <!-- expenses to income ratio -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-primary text-uppercase mb-1">expenses to income ratio</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ expense_ratio|floatformat:1 }} %</div>
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-percent fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+
+       
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xm font-weight-bold text-warning text-uppercase mb-1">income to expenses ratio</div>
+                   
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ income_ratio|floatformat:1 }} %</div>
+                   
+                </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-percent fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+        
+
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-autoxl-3 col-md-6 mb-4">
+            <div class="card border-bottom-warning shadow h-100 py-2">
+                <div class="card-body">
+                  {% if can_spend %}
+    <div class="text-xl font-weight-bold text-warning text-uppercase mb-1">Note about spending</div>
+                    {% for message in can_spend %}
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ message }}</div>
+                                    {% endfor %}
+                        {% else %}
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">No spending advice available.</div>
+                        {% endif %}
+              </div>
+                <div class="col-auto align-self-end">
+                    <i class="fas fa-info fa-2x text-gray-300"></i>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    
+
+
+
+
+
+    <!-- Graphs Row -->
+    <div class="row">
+
+        <!-- Income vs Expenses Chart -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-200">Income vs Expenses</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cash Flow Trend Chart -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-200">Cash Flow Trend</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="cashFlowChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Savings Goal Progress -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-200">Savings Goal Progress</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="savingsGoalChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- Average Income vs Average Expense -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-200">Average Income vs Average Expense</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="avgIncomeExpense"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>    
+
+
+    <div class="row justify-content-center">
+        <!-- Income vs Expenses Trend -->
+        <div class="col-xl-8 col-lg-8">
+            <div class="card shadow mb-8">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-200">groth rate %</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+</div>
+
+<!-- Chart.js Script -->
+<script src="{% static 'mvendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'mvendor/chart.js/Chart.bundle.min.js' %}"></script>
+
+<script>
+
+// Line Chart (Cash Flow)
+var ctx = document.getElementById("cashFlowChart").getContext('2d');
+var cashFlowChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ months|safe }},
+        datasets: [{
+            label: "Cash Flow",
+            data: {{ cash_flow_data|safe }},
+            borderColor: "rgba(54, 162, 235, 0.7)",
+            backgroundColor: "rgba(54, 162, 235, 0.3)",
+            tension: 0.4,
+            fill: true,
+            
+            
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+// Bar Chart (Income vs Expense)
+var ctx2 = document.getElementById("incomeExpenseChart").getContext('2d');
+var incomeExpenseChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: {{ months|safe }},
+        datasets: [
+            {
+                label: 'Income',
+                data: {{amounts|safe }},
+                backgroundColor: "rgba(75, 192, 192, 0.7)"
+            },
+            {
+                label: 'Expenses',
+                data: {{ amounts_expenses|safe }},
+                backgroundColor: "rgba(255, 99, 132, 0.7)"
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+// Doughnut Chart (Savings Goal)
+var ctx3 = document.getElementById("savingsGoalChart").getContext('2d');
+var savingsGoalChart = new Chart(ctx3, {
+    type: 'doughnut',
+    data: {
+        labels: ['Achieved', 'Remaining'],
+        datasets: [{
+            data: [{{ net_profit|default:0 }}, {{ savings_goal_amount|default:0 }} - {{ net_profit|default:0 }}],
+            backgroundColor: [
+                "rgba(13, 123, 187, 0.97)",
+                "rgba(201, 203, 207, 0.7)"
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        cutout: '70%',
+        responsive: true,
+    }
+});
+
+
+
+// growth rate Line Chart
+var ctx = document.getElementById("myAreaChart");
+ var myLineChart = new Chart(ctx, {
+     type: 'line',
+     data: {
+         labels: {{ months|safe }},
+         datasets: [{
+             label: "Income",
+             lineTension: 0.3,
+             backgroundColor: "rgba(78, 115, 223, 0.05)",
+             borderColor: "rgba(78, 115, 223, 1)",
+             pointRadius: 3,
+             pointBackgroundColor: "rgba(78, 115, 223, 1)",
+             pointBorderColor: "rgba(78, 115, 223, 1)",
+             pointHoverRadius: 3,
+             pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+             pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+             pointHitRadius: 10,
+             pointBorderWidth: 2,
+             data: {{ growth_rate_data|safe }},
+             fill: true,
+         }],
+     },
+     options: {
+         maintainAspectRatio: false,
+         layout: {
+             padding: {
+                 left: 10,
+                 right: 25,
+                 top: 25,
+                 bottom: 0
+             }
+         },
+         scales: {
+             xAxes: [{
+                 time: {
+                     unit: 'date'
+                 },
+                 gridLines: {
+                     display: false,
+                     drawBorder: false
+                 },
+                 ticks: {
+                     maxTicksLimit: 7
+                 }
+             }],
+             yAxes: [{
+                 ticks: {
+                     maxTicksLimit: 5,
+                     padding: 10,
+                     callback: function(value, index, values) {
+                        return '%' + value ;
+                     }
+                 },
+                 gridLines: {
+                     color: "rgb(234, 236, 244)",
+                     zeroLineColor: "rgb(234, 236, 244)",
+                     drawBorder: false,
+                     borderDash: [2],
+                     zeroLineBorderDash: [2]
+                 }
+             }],
+         },
+         legend: {
+             display: false
+         },
+         tooltips: {
+             backgroundColor: "rgb(255,255,255)",
+             bodyFontColor: "#858796",
+             titleMarginBottom: 10,
+             titleFontColor: '#6e707e',
+             titleFontSize: 14,
+             borderColor: '#dddfeb',
+             borderWidth: 1,
+             xPadding: 15,
+             yPadding: 15,
+             displayColors: false,
+             intersect: false,
+             mode: 'index',
+             caretPadding: 10,
+             callbacks: {
+                 label: function(tooltipItem, chart) {
+                     var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                     return datasetLabel + ':' + tooltipItem.yLabel;
+                 }
+             }
+         }
+     }
+ });
+
+
+// Average Bar Chart
+var ctxAvg = document.getElementById('avgIncomeExpense').getContext('2d');
+var avgChart = new Chart(ctxAvg, {
+    type: 'bar',
+    data: {
+        labels: ['Income', 'Expense'],
+        datasets: [{
+            label: 'Average Amount', 
+            data: [{{ average_income|floatformat:"2" }}, {{ average_expense|floatformat:"2" }}],
+            backgroundColor: ['#1cc88a', '#e74a3b'],
+            borderColor: ['#17a673', '#c0392b'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+

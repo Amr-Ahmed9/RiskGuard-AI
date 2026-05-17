@@ -1,0 +1,296 @@
+
+
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}income| Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4 ">
+            <h1 class="h3 mb-2 text-gray-200">Income | Dashboard</h1>
+        <div>
+            <a href="{% url 'add_income' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Income
+            </a>
+       
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Total Expenses Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xm font-weight-bold text-primary text-uppercase mb-1">
+                                Total income</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_income }} {{ user_preferences.currency }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expenses Overview Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-xm font-weight-bold text-success text-uppercase mb-1">
+                                    income Overview</div>
+                                <div class="dropdown">
+                                    <button class="btn btn-link btn-sm text-gray-500" type="button" id="timePeriodDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="timePeriodDropdown">
+                                        <a class="dropdown-item {% if current_period == 'daily' %}active{% endif %}" href="?period=daily">
+                                            <i class="fas fa-calendar-day mr-2"></i>Today
+                                        </a>
+                                        <a class="dropdown-item {% if current_period == 'weekly' %}active{% endif %}" href="?period=weekly">
+                                            <i class="fas fa-calendar-week mr-2"></i>This Week
+                                        </a>
+                                        <a class="dropdown-item {% if current_period == 'monthly' %}active{% endif %}" href="?period=monthly">
+                                            <i class="fas fa-calendar-alt mr-2"></i>This Month
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ period_income }} {{ user_preferences.currency }}</div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                {% if current_period == 'daily' %}
+                                    <i class="fas fa-calendar-day mr-1"></i>Today's income  
+                                {% elif current_period == 'weekly' %}
+                                    <i class="fas fa-calendar-week mr-1"></i>This Week's income
+                                {% else %}
+                                    <i class="fas fa-calendar-alt mr-1"></i>This Month's income
+                                {% endif %}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                Last updated: {{ now|date:"H:i" }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xm font-weight-bold text-info text-uppercase mb-1">
+                                Sources</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ source_count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Expenses Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xm font-weight-bold text-warning text-uppercase mb-1">
+                                Recent income</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ recent_income_count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold">income Overview</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-gray-200">income Category</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> {% endcomment %}
+
+<script src="{% static 'mvendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'mvendor/chart.js/Chart.bundle.min.js' %}"></script>
+<script>
+ 
+    // Area Chart
+ var ctx = document.getElementById("myAreaChart");
+ var myLineChart = new Chart(ctx, {
+     type: 'line',
+     data: {
+         labels: {{ dates|safe }},
+         datasets: [{
+             label: "Income",
+             lineTension: 0.3,
+             backgroundColor: "rgba(78, 115, 223, 0.05)",
+             borderColor: "rgba(78, 115, 223, 1)",
+             pointRadius: 3,
+             pointBackgroundColor: "rgba(78, 115, 223, 1)",
+             pointBorderColor: "rgba(78, 115, 223, 1)",
+             pointHoverRadius: 3,
+             pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+             pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+             pointHitRadius: 10,
+             pointBorderWidth: 2,
+             data: {{ amounts|safe }},
+         }],
+     },
+     options: {
+         maintainAspectRatio: false,
+         layout: {
+             padding: {
+                 left: 10,
+                 right: 25,
+                 top: 25,
+                 bottom: 0
+             }
+         },
+         scales: {
+             xAxes: [{
+                 time: {
+                     unit: 'date'
+                 },
+                 gridLines: {
+                     display: false,
+                     drawBorder: false
+                 },
+                 ticks: {
+                     maxTicksLimit: 7
+                 }
+             }],
+             yAxes: [{
+                 ticks: {
+                     maxTicksLimit: 5,
+                     padding: 10,
+                     callback: function(value, index, values) {
+                         return '{{ user_preferences.currency }} ' + value;
+                     }
+                 },
+                 gridLines: {
+                     color: "rgb(234, 236, 244)",
+                     zeroLineColor: "rgb(234, 236, 244)",
+                     drawBorder: false,
+                     borderDash: [2],
+                     zeroLineBorderDash: [2]
+                 }
+             }],
+         },
+         legend: {
+             display: false
+         },
+         tooltips: {
+             backgroundColor: "rgb(255,255,255)",
+             bodyFontColor: "#858796",
+             titleMarginBottom: 10,
+             titleFontColor: '#6e707e',
+             titleFontSize: 14,
+             borderColor: '#dddfeb',
+             borderWidth: 1,
+             xPadding: 15,
+             yPadding: 15,
+             displayColors: false,
+             intersect: false,
+             mode: 'index',
+             caretPadding: 10,
+             callbacks: {
+                 label: function(tooltipItem, chart) {
+                     var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                     return datasetLabel + ': {{ user_preferences.currency }} ' + tooltipItem.yLabel;
+                 }
+             }
+         }
+     }
+ });
+
+ // Pie Chart
+ var ctx = document.getElementById("myPieChart");
+ var myPieChart = new Chart(ctx, {
+     type: 'doughnut',
+     data: {
+         labels: {{ sources|safe }},
+         datasets: [{
+             data: {{ source_amounts|safe }},
+             backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b','#858796','#e74a3b', '#858796' ,'#858796','#858796','#858796','#128796'],
+             hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617','#858746','#e79a3b', '#853751','#858796','#858796','#858796','#458796'],
+             hoverBorderColor: "rgba(234, 236, 244, 1)",
+         }],
+     },
+     options: {
+         maintainAspectRatio: false,
+         tooltips: {
+             backgroundColor: "rgb(255,255,255)",
+             bodyFontColor: "#858796",
+             borderColor: '#dddfeb',
+             borderWidth: 1,
+             xPadding: 15,
+             yPadding: 15,
+             displayColors: false,
+             caretPadding: 10,
+         },
+         legend: {
+             display: true,
+             position: 'bottom'
+         },
+         cutoutPercentage: 80,
+     },
+ });
+
+</script>  
+
+
+{% endblock %}
+
+
+    <!-- Page level custom scripts -->
+    
+

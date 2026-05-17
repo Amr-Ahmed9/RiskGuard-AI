@@ -1,0 +1,154 @@
+{% load static %}
+{% block sidebar %}
+ <!-- Sidebar -->
+ <ul class="navbar-nav bg-danger1 sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" >
+        <div class="sidebar-brand-icon ">
+            <i class="fas "><img src="{% static 'assets/img/2.png' %}" alt="RiskGuard Logo" style="height: 60px;"></i>
+            
+            
+        </div>
+        <div class="sidebar-brand-text mx-3"></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'mainDash'%}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Main Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading text-gray-400">
+        <i class="fas fa-arrow-down"></i>
+        Details views : 
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>DASHBOARDS</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                
+                <a class="collapse-item" href="{% url 'income_index'%}">
+                    <i class="fas fa-fw fa-chart-line text-success mr-2"></i>
+                    </i><span> INCOME</span></a>
+                    <div class="collapse-divider"></div>
+
+                <a class="collapse-item" href="{% url 'expenses_index'%}">
+                    <i class="fas fa-fw fa-chart-line text-danger mr-2"></i>
+                    <span>EXPENSES</span></a>
+               
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                
+                <a class="collapse-item" href="{% url 'income_tables'%}"> <i class="fas fa-fw fa-table text-success mr-2"></i>
+                    <span>Income Table</span></a>
+                    <a class="collapse-item" href="{% url 'expenses-tables'%}"> <i class="fas fa-fw fa-table text-danger mr-2"></i>
+                        <span>Expenses Table</span></a>
+                            
+                        <a class="collapse-item" href="{% url 'tables'%}"> <i class="fas fa-fw fa-table text-info mr-2"></i>
+                            <span>Targets Table</span></a>
+                            <a class="collapse-item" href="{% url 'alerttable'%}"> <i class="fas fa-fw fa-table text-info mr-2"></i>
+                            <span>Alerts Table</span></a>
+                            <a class="collapse-item" href="{% url 'overalltable'%}"> <i class="fas fa-fw fa-table text-info mr-2"></i>
+                            <span>Overall Table</span></a>
+                          
+                </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Other Pages
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+            aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Settings</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                {% comment %} <h6 class="collapse-header"></h6> {% endcomment %}
+                <a class="collapse-item" href="{% url 'userpreferences' %}">
+                    <i class="fas fa-fw fa-money-bill-alt text-success mr-2"></i>
+                    <span>Currency Used</span></a>
+                {% comment %} <a class="collapse-item" href="{% url 'income_tables'%}">Income Table</a> {% endcomment %}
+                <a class="collapse-item" href="{% url 'userprofile' %}">
+                    <i class="fas fa-fw fa-user mr-2"></i>
+                    <span>User Profile</span></a>
+                <a class="collapse-item" href="{% url 'create_target' %}">
+                    <i class="fas fa-fw fa-bullseye text-success mr-2"></i>
+                    <span>Create Target</span></a>
+                    <a class="collapse-item" href="{% url 'set_alert' %}">
+                        <i class="fas fa-fw fa-bell text-danger mr-2"></i>
+                        <span>Set Alert</span></a>
+               </div>
+        </div>
+    </li>
+   
+    <hr class="sidebar-divider">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'forecast' %}">
+            <i class="fas fa-chart-bar fa-sm fa-fw mr-2 "></i>
+            <span>Forecast 3 Months about available data</span></a>
+    </li>
+
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Charts -->
+     <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
+            <span>Logout</span></a>
+    </li>
+   
+    <!-- Nav Item - Tables -->
+    {% comment %} <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span></a>
+    </li>  {% endcomment %}
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    
+</ul>
+<!-- End of Sidebar -->
+{% endblock %}

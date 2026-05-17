@@ -1,0 +1,97 @@
+{% extends 'baseauth.html' %}
+
+{% block title %}
+<title>Register</title>
+{% endblock %}
+
+  {% block form %}
+   
+  
+  <div class="container">
+  
+      <!-- Centered Form Start -->
+      <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="w-100" style="max-width: 500px;">
+          <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-5">
+              <!-- Title -->
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+              </div>
+  
+              <!-- Form Start -->
+              <form class="user" method="POST">
+                {% csrf_token %}
+                 
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{Rform.first_name}}
+                  </div>
+                  
+                  <div class="col-sm-6">
+                    {{Rform.last_name}}
+                  </div>
+                  
+                </div>
+  
+                <div class="form-group">
+                  {{Rform.email}}
+                </div>
+                
+                <div class="form-group">
+                  {{Rform.username}}
+                </div>
+                  
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{Rform.password1}}
+                  </div>
+                 
+                  <div class="col-sm-6">
+                    {{Rform.password2}}
+                  </div>
+                </div>
+
+              
+
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                  Register Account
+                </button>
+  
+                <hr>
+  
+                
+              </form>
+
+              <!-- Form End -->
+              {% if Rform.errors %}
+  <div class="alert alert-danger">
+    <ul>
+      {% for field in Rform %}
+        {% for error in field.errors %}
+          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in Rform.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+  
+              <hr>
+              <div class="text-center">
+                <a class="small" href="{% url 'login' %}">Already have an account? Login!</a>
+              </div>
+              
+  
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Centered Form End -->
+  
+    </div>
+    {% endblock form %}
+  
+  
